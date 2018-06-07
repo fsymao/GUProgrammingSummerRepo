@@ -43,6 +43,7 @@
 
 
 #---------------------Actual Code Statr from Here--------------------------------------------------------------------#
+library(dplyr)
 
 #read data from csv file
 data<- read.table("C:/Users/fengshaoyu/Desktop/hw1/DATASET1.csv",sep =",",
@@ -50,7 +51,10 @@ data<- read.table("C:/Users/fengshaoyu/Desktop/hw1/DATASET1.csv",sep =",",
 
 #---Part I (a)-----create new feature via bining
 
-
+Binning_feature <- function(x, y) 
+{
+  
+}
 
 
 
