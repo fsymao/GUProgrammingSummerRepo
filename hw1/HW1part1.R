@@ -46,15 +46,30 @@
 library(dplyr)
 
 #read data from csv file
-data<- read.table("C:/Users/fengshaoyu/Desktop/hw1/DATASET1.csv",sep =",",
+data<- read.table("/Users/Shaoyu/Desktop/GU Summer/GUProgrammingSummerRepo/hw1/DATASET1.csv",sep =",",
                   header = TRUE, quote = "", stringsAsFactors = F)
 
 #---Part I (a)-----create new feature via bining
-
-Binning_feature <- function(x, y) 
-{
-  
+# bin the WholeWeight column based on quantile 
+quant=quantile(data$WholeWeight, probs = c(.2, .4, .6,.8))
+Binning_feature <- function(x,quantarr) {
+  if (x<=quantarr[1]){
+   return ("A")
+  } else if (quantarr[2]>=x && x>quantarr[1]){
+    return ("B")
+  }
+  else if (quantarr[3]>=x && x>quantarr[2]){
+    return ("C")
+  }
+  else if (quantarr[4]>=x && x>quantarr[3]){
+    return ("D")
+  }
+  else {
+    return ("E")
+  }
 }
+#new categorical column is called WeightBin
+data$WeightBin<- 
 
 
 
