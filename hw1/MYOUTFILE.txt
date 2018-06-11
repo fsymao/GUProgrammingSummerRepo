@@ -1,25 +1,67 @@
 ---This is the head () output after adding first categorical column---
 
-  Sex Length Diameter Height WholeWeight ShuckedWeight VisceraWeight ShellWeight Rings WeightBin
-1   M  0.455    0.365  0.095      0.5140        0.2245        0.1010       0.150    15         B
-2   M  0.350    0.265  0.090      0.2255        0.0995        0.0485       0.070     7         A
-3   F  0.530    0.420  0.135      0.6770        0.2565        0.1415       0.210     9         C
-4   M  0.440    0.365  0.125      0.5160        0.2155        0.1140       0.155    10         B
-5   I  0.330    0.255  0.080      0.2050        0.0895        0.0395       0.055     7         A
-6   I  0.425    0.300  0.095      0.3515        0.1410        0.0775       0.120     8         A
+  Sex Length Diameter Height WholeWeight ShuckedWeight VisceraWeight ShellWeight Rings
+1   M  0.455    0.365  0.095      0.5140        0.2245        0.1010       0.150    15
+2   M  0.350    0.265  0.090      0.2255        0.0995        0.0485       0.070     7
+3   F  0.530    0.420  0.135      0.6770        0.2565        0.1415       0.210     9
+4   M  0.440    0.365  0.125      0.5160        0.2155        0.1140       0.155    10
+5   I  0.330    0.255  0.080      0.2050        0.0895        0.0395       0.055     7
+6   I  0.425    0.300  0.095      0.3515        0.1410        0.0775       0.120     8
+  WeightBin
+1         B
+2         A
+3         C
+4         B
+5         A
+6         A
 
 ------------------------------------------------------------------------------
 ---This is the head () output after adding second categorical column---
 
-  Sex Length Diameter Height WholeWeight ShuckedWeight VisceraWeight ShellWeight Rings WeightBin LongAbalone
-1   M  0.455    0.365  0.095      0.5140        0.2245        0.1010       0.150    15         B           0
-2   M  0.350    0.265  0.090      0.2255        0.0995        0.0485       0.070     7         A           0
-3   F  0.530    0.420  0.135      0.6770        0.2565        0.1415       0.210     9         C           1
-4   M  0.440    0.365  0.125      0.5160        0.2155        0.1140       0.155    10         B           0
-5   I  0.330    0.255  0.080      0.2050        0.0895        0.0395       0.055     7         A           0
-6   I  0.425    0.300  0.095      0.3515        0.1410        0.0775       0.120     8         A           0
+  Sex Length Diameter Height WholeWeight ShuckedWeight VisceraWeight ShellWeight Rings
+1   M  0.455    0.365  0.095      0.5140        0.2245        0.1010       0.150    15
+2   M  0.350    0.265  0.090      0.2255        0.0995        0.0485       0.070     7
+3   F  0.530    0.420  0.135      0.6770        0.2565        0.1415       0.210     9
+4   M  0.440    0.365  0.125      0.5160        0.2155        0.1140       0.155    10
+5   I  0.330    0.255  0.080      0.2050        0.0895        0.0395       0.055     7
+6   I  0.425    0.300  0.095      0.3515        0.1410        0.0775       0.120     8
+  WeightBin LongAbalone
+1         B           0
+2         A           0
+3         C           1
+4         B           0
+5         A           0
+6         A           0
 
 ------------------------------------------------------------------------------
 ---Part I(b) starts from here---
+
+
+---Anova Test---
+---Feature column: WholeWeight---
+---Response column:rings---
+              Df Sum Sq Mean Sq F value Pr(>F)    
+factors        1  12677   12677    1722 <2e-16 ***
+Residuals   4175  30734       7                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+
+
+
+---T Test---
+
+	Welch Two Sample t-test
+
+data:  y by x
+t = -56.255, df = 3090.7, p-value < 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.05873480 -0.05477835
+sample estimates:
+mean in group 0 mean in group 1 
+      0.1075985       0.1643550 
+
 
 

@@ -39,14 +39,14 @@
 # Shell weight	continuous	grams	after being dried
 # Rings		integer			+1.5 gives the age in years
 #---------------------------------------------------------------------------------------------------------------------#
-current_dir="C:/Users/fengshaoyu/Desktop/GUSummer/GUProgrammingSummerRepo/hw1"
-#current_dir="Users/Shaoyu/Desktop/GU Summer/GUProgrammingSummerRepo/hw1"
+current_dir="C:/Users/fengshaoyu/Desktop/GUSummer/GUProgrammingSummerRepo/hw1/DATASET1.csv"
+#current_dir="Users/Shaoyu/Desktop/GU Summer/GUProgrammingSummerRepo/hw1/DATASET1.csv"
 setwd(dirname(current_dir))
 
 #---------------------Actual Code Statr from Here--------------------------------------------------------------------#
 library(dplyr)
 #read data from csv file
-data<- read.table("hw1/DATASET1.csv",sep =",",
+data<- read.table("DATASET1.csv",sep =",",
                   header = TRUE, quote = "", stringsAsFactors = F)
 #---Part I (a)-----create new feature via bining
 # bin the WholeWeight column based on quantile 
@@ -57,7 +57,7 @@ labels <- c("A", "B", "C", "D", "E")
 #new categorical column is called WeightBin
 data$WeightBin <- cut(data$WholeWeight, levels,labels=labels)
 
-sink('hw1/MYOUTFILE.txt')
+sink('MYOUTFILE.txt')
 cat("---This is the head () output after adding first categorical column---\n")
 cat("\n")
 head(data)
@@ -69,7 +69,7 @@ sink()
 # adding second binary catrgorical column 
 #Creating binary categorical column based on Length column
 data$LongAbalone<-ifelse(data$Length>mean(data$Length), 1,0)
-sink('hw1/MYOUTFILE.txt',append="True")
+sink('MYOUTFILE.txt',append="True")
 cat("---This is the head () output after adding second categorical column---\n")
 cat("\n")
 head(data)
@@ -80,11 +80,49 @@ sink()
 
 #---Part I (b)-----create four functions to do statistical testing
 
-sink('hw1/MYOUTFILE.txt',append="True")
+sink('MYOUTFILE.txt',append="True")
 cat("---Part I(b) starts from here---\n")
 cat("\n")
 cat("\n")
 sink()
+
+AnovaTest<- function(factors, response, rawdata)
+{
+  results=aov(response ~ factors, data=rawdata)
+  return (summary(results))
+}
+
+sink('MYOUTFILE.txt',append="True")
+cat("---Anova Test---\n")
+cat("---Feature column: WholeWeight---\n")
+cat("---Response column:rings---\n")
+AnovaTest(data$WholeWeight,data$Rings,data)
+cat("\n")
+cat("\n")
+sink()
+
+###T-Test
+
+#x can be 0 or 1 
+# y can be numerical 
+tTest<- function(x,y)
+{
+  t.test(y~x)
+}
+sink('MYOUTFILE.txt',append="True")
+cat("---T Test---\n")
+tTest(data$LongAbalone,data$Height)
+cat("\n")
+cat("\n")
+sink()
+
+####Sample Z test 
+
+
+
+
+
+
 
 
 
