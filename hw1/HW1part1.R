@@ -39,37 +39,55 @@
 # Shell weight	continuous	grams	after being dried
 # Rings		integer			+1.5 gives the age in years
 #---------------------------------------------------------------------------------------------------------------------#
-
-
+current_dir="C:/Users/fengshaoyu/Desktop/GUSummer/GUProgrammingSummerRepo/hw1"
+#current_dir="Users/Shaoyu/Desktop/GU Summer/GUProgrammingSummerRepo/hw1"
+setwd(dirname(current_dir))
 
 #---------------------Actual Code Statr from Here--------------------------------------------------------------------#
 library(dplyr)
-
 #read data from csv file
-data<- read.table("/Users/Shaoyu/Desktop/GU Summer/GUProgrammingSummerRepo/hw1/DATASET1.csv",sep =",",
+data<- read.table("hw1/DATASET1.csv",sep =",",
                   header = TRUE, quote = "", stringsAsFactors = F)
-
 #---Part I (a)-----create new feature via bining
 # bin the WholeWeight column based on quantile 
-quant=quantile(data$WholeWeight, probs = c(.2, .4, .6,.8))
-Binning_feature <- function(x,quantarr) {
-  if (x<=quantarr[1]){
-   return ("A")
-  } else if (quantarr[2]>=x && x>quantarr[1]){
-    return ("B")
-  }
-  else if (quantarr[3]>=x && x>quantarr[2]){
-    return ("C")
-  }
-  else if (quantarr[4]>=x && x>quantarr[3]){
-    return ("D")
-  }
-  else {
-    return ("E")
-  }
-}
+quantarr=quantile(data$WholeWeight, probs = c(.2, .4, .6,.8))
+#bining the Wholeweight column using cut function
+levels<- c(-Inf,quantarr,Inf)
+labels <- c("A", "B", "C", "D", "E")
 #new categorical column is called WeightBin
-data$WeightBin<- 
+data$WeightBin <- cut(data$WholeWeight, levels,labels=labels)
+
+sink('hw1/MYOUTFILE.txt')
+cat("---This is the head () output after adding first categorical column---\n")
+cat("\n")
+head(data)
+cat("\n")
+cat("------------------------------------------------------------------------------")
+cat("\n")
+sink()
+
+# adding second binary catrgorical column 
+#Creating binary categorical column based on Length column
+data$LongAbalone<-ifelse(data$Length>mean(data$Length), 1,0)
+sink('hw1/MYOUTFILE.txt',append="True")
+cat("---This is the head () output after adding second categorical column---\n")
+cat("\n")
+head(data)
+cat("\n")
+cat("------------------------------------------------------------------------------")
+cat("\n")
+sink()
+
+#---Part I (b)-----create four functions to do statistical testing
+
+sink('hw1/MYOUTFILE.txt',append="True")
+cat("---Part I(b) starts from here---\n")
+cat("\n")
+cat("\n")
+sink()
+
+
+
 
 
 

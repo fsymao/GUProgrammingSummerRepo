@@ -1,0 +1,25 @@
+---This is the head () output after adding first categorical column---
+
+  Sex Length Diameter Height WholeWeight ShuckedWeight VisceraWeight ShellWeight Rings WeightBin
+1   M  0.455    0.365  0.095      0.5140        0.2245        0.1010       0.150    15         B
+2   M  0.350    0.265  0.090      0.2255        0.0995        0.0485       0.070     7         A
+3   F  0.530    0.420  0.135      0.6770        0.2565        0.1415       0.210     9         C
+4   M  0.440    0.365  0.125      0.5160        0.2155        0.1140       0.155    10         B
+5   I  0.330    0.255  0.080      0.2050        0.0895        0.0395       0.055     7         A
+6   I  0.425    0.300  0.095      0.3515        0.1410        0.0775       0.120     8         A
+
+------------------------------------------------------------------------------
+---This is the head () output after adding second categorical column---
+
+  Sex Length Diameter Height WholeWeight ShuckedWeight VisceraWeight ShellWeight Rings WeightBin LongAbalone
+1   M  0.455    0.365  0.095      0.5140        0.2245        0.1010       0.150    15         B           0
+2   M  0.350    0.265  0.090      0.2255        0.0995        0.0485       0.070     7         A           0
+3   F  0.530    0.420  0.135      0.6770        0.2565        0.1415       0.210     9         C           1
+4   M  0.440    0.365  0.125      0.5160        0.2155        0.1140       0.155    10         B           0
+5   I  0.330    0.255  0.080      0.2050        0.0895        0.0395       0.055     7         A           0
+6   I  0.425    0.300  0.095      0.3515        0.1410        0.0775       0.120     8         A           0
+
+------------------------------------------------------------------------------
+---Part I(b) starts from here---
+
+
