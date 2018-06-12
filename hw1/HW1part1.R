@@ -101,22 +101,41 @@ cat("\n")
 cat("\n")
 sink()
 
-###T-Test
+### Independent sample T test
+## need to consider numeric and binary factory case
+## define one more function to 
 
-#x can be 0 or 1 
-# y can be numerical 
+
+is.binary <- function(v) {
+  x <- unique(v)
+  length(x) - sum(is.na(x)) == 2L && all(x[1:2] == 0:1)
+}
+
 tTest<- function(x,y)
 {
+if (is.binary(x))
+{
+  cat("---T Test for binary factor---\n")
   t.test(y~x)
 }
+else
+{
+  cat("---T Test for numeric factor---\n")
+  t.test(y,x)
+}
+}
+
 sink('MYOUTFILE.txt',append="True")
 cat("---T Test---\n")
 tTest(data$LongAbalone,data$Height)
+tTest(data$WholeWeight,data$Height)
+
 cat("\n")
 cat("\n")
 sink()
 
-####Sample Z test 
+####Z test
+
 
 
 
