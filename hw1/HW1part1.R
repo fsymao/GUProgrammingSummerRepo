@@ -39,9 +39,15 @@
 # Shell weight	continuous	grams	after being dried
 # Rings		integer			+1.5 gives the age in years
 #---------------------------------------------------------------------------------------------------------------------#
-current_dir="C:/Users/fengshaoyu/Desktop/GUSummer/GUProgrammingSummerRepo/hw1/DATASET1.csv"
-#current_dir="Users/Shaoyu/Desktop/GU Summer/GUProgrammingSummerRepo/hw1/DATASET1.csv"
-setwd(dirname(current_dir))
+
+
+# please switch to the source file directory as working directory before code execution
+
+if(file.exists("MYOUTFILE.txt"))
+{
+  file.remove("MYOUTFILE.txt")
+  file.create("MYOUTFILE.txt")
+}
 
 #---------------------Actual Code Statr from Here--------------------------------------------------------------------#
 library(dplyr)
@@ -86,6 +92,8 @@ cat("\n")
 cat("\n")
 sink()
 
+
+###function 1 Anova
 AnovaTest<- function(factors, response, rawdata)
 {
   results=aov(response ~ factors, data=rawdata)
@@ -101,6 +109,7 @@ cat("\n")
 cat("\n")
 sink()
 
+# Function 2 T test
 ### Independent sample T test
 ## need to consider numeric and binary factory case
 ## define one more function to 
@@ -134,15 +143,53 @@ cat("\n")
 cat("\n")
 sink()
 
-####Z test
+####Function 3: Z test
 
+zTest = function(a, mu, var){
+  zeta <- (mean(a) - mu) / (sqrt(var / length(a)))
+  p_val<- pnorm(zeta,0,1)
+  return(zeta)
+}
 
+sink('MYOUTFILE.txt',append="True")
+cat("---Z Test---\n")
+cat("---Z Test Score is: ---\n")
+zTest(data$Diameter,0.4,0.1)
+cat("---Z Test pvalue is: ---\n")
+pnorm(zTest(data$Diameter,0.4,0.1),0,1)
+cat("\n")
+cat("\n")
+sink()
 
+####Function4: summary statistis for quantitative variable
 
+sumStat = function(a){
+  if (is.numeric(a))
+  {
+    return (summary(a))
+  }
+  else 
+    cat("This is not a numerical column")
+}
 
+sink('MYOUTFILE.txt',append="True")
+cat("---Summary Statistic---\n")
+cat("---SUmmary Statistic for numeric column: ---\n")
+sumStat(data$Length)
+cat("---SUmmary Statistic for non-numeric column: ---\n")
+sumStat(data$WeightBin)
+cat("\n")
+cat("\n")
+sink()
 
+#---Part I (C)-----Basic Ploting function 
 
-
+# plot1: Boxplots for at least three variables on the same plot
+# make use of R's ggplot library
+library(ggplot2)
+require(reshape2)
+data_part<-data[,c("Length","Diameter","Height","Sex")]
+data_transformed <- melt(data_part, id.var = "Sex")
 
 
 

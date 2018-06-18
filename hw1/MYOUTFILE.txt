@@ -33,8 +33,6 @@ Residuals   4175  30734       7
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 
-
-
 ---T Test---
 ---T Test for binary factor---
 
@@ -63,4 +61,18 @@ mean of x mean of y
 0.1395164 0.8287422 
 
 
+
+---Z Test---
+---Z Test Score is: ---
+[1] 1.610748
+---Z Test pvalue is: ---
+[1] 0.9463827
+
+
+---Summary Statistic---
+---SUmmary Statistic for numeric column: ---
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.075   0.450   0.545   0.524   0.615   0.815 
+---SUmmary Statistic for non-numeric column: ---
+This is not a numerical column
 
