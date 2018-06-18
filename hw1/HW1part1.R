@@ -1,5 +1,10 @@
 ####Week1 Assignment#####
 
+
+##Name: Shaoyu Feng
+##NetID: sf865
+
+
 #---------------------Information about the dataset-----------------------------------------------------------------#
 # Source:
 #   
@@ -188,16 +193,41 @@ sink()
 # make use of R's ggplot library
 library(ggplot2)
 require(reshape2)
-data_part<-data[,c("Length","Diameter","Height","Sex")]
+data_part<-data[,c("Length","Diameter","Height","WholeWeight","Sex")]
 data_transformed <- melt(data_part, id.var = "Sex")
 
+p <- ggplot(data = data_transformed,aes(x=variable, y=value)) + 
+  geom_boxplot(aes(fill=Sex))
+p<- p+ facet_wrap( ~ variable, scales="free")
+p <- p + xlab("Ablone Weight and Height  Attribute") + ylab("Ablone Attribute Value") + ggtitle("Sex V.S. Size and Weight of Ablone")
+p <- p + guides(fill=guide_legend(title="Ablone Sex"))
+p
 
+##make use of Base R ploting library
+new_order <- with(data_transformed, reorder(variable , value, mean , na.rm=T))
+par(mar=c(3,4,3,1))
+myplot=boxplot(data_transformed$value ~ data_transformed$Sex*data_transformed$variable,data=data$data_transformed,boxwex=0.8,ylab="Ablone Attribute Value",
+               main="Sex V.S. Size and Weight of Ablone" , col=c("tomato" , "green","blue"))
+# Add a legend
+legend("topleft", legend = c("Sex:F", "Sex:I","Sex:M"), col=c("tomato" , "green","blue"),
+       pch = 15, bty = "n", pt.cex = 3, cex = 1.2,  horiz = F, inset = c(0.1, 0.1))
 
+# plot2: Histogram with normal curve
+x<-data$Rings
+h<-hist(x,breaks=10,col='blue', xlab="Ablone Rings distribution", main="Histogram with Normal Curve")
+xfit<-seq(min(x),max(x),length=50)
+yfit<-dnorm(xfit, mean=mean(x),sd=sd(x))
+yfit<-yfit*diff(h$mids[1:2])*length(x)
+lines(xfit,yfit,col="red",lwd=2)
 
+#plot3: Scatter Plot between two variables
+plot(data$Height,data$Rings, xlab="Ablone Height",ylab="Ablone Rings(Indicator of Age)",  col="blue", main="Scatter Plot: Height V.S Age")
 
+#plot multiple bar plot 
 
-
-
-
+data_bar <- table(data$Sex, data$Rings)
+barplot(data_bar, main="Ablone Distributon by Sex and Rings",
+        xlab="Numer of Rings of Ablone", ylab="Number of abloe",col=c("tomato","green","blue"),
+        legend = rownames(data_bar), beside=TRUE)
 
 
