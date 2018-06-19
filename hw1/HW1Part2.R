@@ -25,14 +25,17 @@ data2<- read.table("Titanic_Training_Data.csv",sep =",",
 
 
 # a)_Print the head of the data - specifically the first 10 rows.
+print("The first 10 lines of the data are:")
 print(head(data2,10))
 
-# b) print the structure of the dataset (using str in R)
+# b) print the structure of the dataset (using str in R)\
+print("The data structure is:")
 print(str(data2))
 
 # c) change all char types to factors.
 data2[sapply(data2, is.character)]<-lapply(data2[sapply(data2, is.character)], 
                                            as.factor)
+print("The data structure after changing all char to factors is:")
 print(str(data2))
 
 # d) create a frequency table (using table) for all variables
@@ -41,7 +44,9 @@ print(str(data2))
 fre_table <-lapply(data2, function(x) {
   if (is.numeric(x)) return(summary(x))
   if (is.factor(x)) return(table(x))
-})
+}) 
+
+print("The frequcy table is: ")
 print(str(fre_table))
 
 ## e) for each variable, check is there are NA values (is.na) 
@@ -52,15 +57,31 @@ NAvalue <-lapply(data2, function(x) {
   #if (is.factor(x)) return(sum(x==""))
   sum(is.na(x))
 })
+
+print("The summary for NA values for each column is: ")
 print(NAvalue)
 
 ## f) Count the number of complete rows and print this. (Use complete.cases)
+print("The number of completed rows is:")
 print(sum(complete.cases(data2)))
 
 ## g) Next, think of how to best clean the data. 
 
 ## data Manupulation
-### AGe: Missing value is about 20% of whole dataset, will impute the missing value by median of the column
+### AGe: Missing value is about 20% of whole dataset, will impute the missing value by mean of the column
+AgemMsiingRate<- sum(is.na(data2$Age))/length(data2$Age)
+### AgeMissingRate is abour 20%
+data2$Age[is.na(data2$Age)] <-mean(data2$Age, na.rm=TRUE)
+## Embarked: Remove the null values with most frequent items
+data2$Embarked <- replace(data2$Embarked, which(is.na(data2$Embarked)), 'S')
+print(sum(is.na(data2$Embarked)))
+##Name column: Since there are too many names, the most important infomation within name could be the Title 
+##like Mr, Miss, Dr etc. 
+names<-data2$Name
+
+title<-  strsplit(as.character(names[1]),',')
+
+
 
 
 
