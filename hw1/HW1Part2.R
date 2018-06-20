@@ -68,18 +68,46 @@ print(sum(complete.cases(data2)))
 ## g) Next, think of how to best clean the data. 
 
 ## data Manupulation
+
 ### AGe: Missing value is about 20% of whole dataset, will impute the missing value by mean of the column
 AgemMsiingRate<- sum(is.na(data2$Age))/length(data2$Age)
 ### AgeMissingRate is abour 20%
 data2$Age[is.na(data2$Age)] <-mean(data2$Age, na.rm=TRUE)
+
 ## Embarked: Remove the null values with most frequent items
 data2$Embarked <- replace(data2$Embarked, which(is.na(data2$Embarked)), 'S')
 print(sum(is.na(data2$Embarked)))
-##Name column: Since there are too many names, the most important infomation within name could be the Title 
+
+##Name column: Since there are too many names, and assumption is that women and child will win advantage over men
+#in survival
+#the most important infomation within name could be the Title 
 ##like Mr, Miss, Dr etc. 
 names<-data2$Name
+title<-  lapply(names, function(x) {  temp<- strsplit(as.character(x),",")[1][[1]][2] 
+gsub(" ","",strsplit(as.character(temp),"\\.")[1][[1]][1]) 
+})
 
-title<-  strsplit(as.character(names[1]),',')
+title<-unlist(title)
+data2$title <- title
+
+table(data2$title)
+data2$title[data2$title == 'Ms'] <- 'Miss'
+data2$title[data2$title == 'Lady'] <- 'Miss'
+data2$title[data2$title == 'Mlle'] <- 'Miss' 
+data2$title[data2$title == 'Mme'] <- 'Miss'
+data2$title[data2$title == 'Sir'] <- 'Mr'
+data2$title[data2$title %in% c('Sir','Capt','Col','Major','Master','Dr','Rev','Don','theCountess','Jonkheer')] <- 'Other'
+table(data2$title)
+
+## sibsp  and parch can be combined together to get family size 
+data2$FamilySize<-data2$Parch+data2$SibSp+1
+##drop cabin column, as the missing rate is high 
+carbinmissingrate<- sum(is.na(data2$Cabin))/length(data2$Cabin)
+data2<-data2[,! names(data2) %in% c('Cabin')]
+
+
+
+
 
 
 
