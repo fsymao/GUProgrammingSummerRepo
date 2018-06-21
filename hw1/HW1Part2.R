@@ -2,7 +2,6 @@
 ###Part 2 ###
 
 
-
 ##Name: Shaoyu Feng
 ##NetID: sf865
 
@@ -19,6 +18,14 @@
 ## you will need to specify quote
 ## also need to specify null value includes "NA" and empty string ""
 
+
+###Additional package needed is 
+##ggplot
+##randomForest
+
+
+require(ggplot2)
+require(randomForest)
 
 data2<- read.table("Titanic_Training_Data.csv",sep =",",
                   header = TRUE, quote ="\"'", stringsAsFactors = F, na.strings = c("", "NA"))
@@ -96,23 +103,105 @@ data2$title[data2$title == 'Lady'] <- 'Miss'
 data2$title[data2$title == 'Mlle'] <- 'Miss' 
 data2$title[data2$title == 'Mme'] <- 'Miss'
 data2$title[data2$title == 'Sir'] <- 'Mr'
-data2$title[data2$title %in% c('Sir','Capt','Col','Major','Master','Dr','Rev','Don','theCountess','Jonkheer')] <- 'Other'
+data2$title[data2$title %in% c('Sir','Capt','Col','Major','Dr','Rev','Don','theCountess','Jonkheer')] <- 'Other'
 table(data2$title)
 
 ## sibsp  and parch can be combined together to get family size 
 data2$FamilySize<-data2$Parch+data2$SibSp+1
+
+
 ##drop cabin column, as the missing rate is high 
 carbinmissingrate<- sum(is.na(data2$Cabin))/length(data2$Cabin)
 data2<-data2[,! names(data2) %in% c('Cabin')]
 
 
 
+##h) create a column called age group
+
+data2$BinnedAge[data2$Age<=15]<-'Age 0-15'
+data2$BinnedAge[data2$Age>15 & data2$Age<=29]<-'Age 16-29'
+data2$BinnedAge[data2$Age>29 & data2$Age<=45]<-'Age 30-45'
+data2$BinnedAge[data2$Age>45]<-'Age 46+'
 
 
+##f) some exploratory analysis
+
+data2 <- data2 %>%
+  mutate(Survived = case_when(Survived==1 ~ "Yes", 
+                              Survived==0 ~ "No"))
+### from below plot we know, the higher the class, the higher the survival rate 
+ggplot(data2, aes(Pclass, fill=Survived)) +
+  geom_bar(position = "stack") +
+  scale_fill_brewer(palette= "Set1" )+
+  ylab("Survival Rate") +
+  ggtitle("Survival Rate by PCClass")  
+
+####  Female has a significantly higher rate than male 
+ggplot(data2, aes(Sex, fill=Survived)) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette= "Set1" )+
+  ylab("Survival Rate") +
+  ggtitle("Survival Rate by Sex")  
+
+### generallly, 0-15 has a higher survival rate, while other age groups survival rate are somewhat similar 
+ggplot(data2, aes(BinnedAge, fill=Survived)) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette= "Set1" )+
+  ylab("Survival Rate") +
+  ggtitle("Survival Rate by Age Group")  
+
+### Again, Miss and Mrs has a relative higher survival ratio
+
+ggplot(data2, aes(title, fill=Survived)) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette= "Set1" )+
+  ylab("Survival Rate") +
+  ggtitle("Survival Rate by  Title")  
+
+### No Conclusive findings on this data column 
+ggplot(data2, aes(FamilySize, fill=Survived)) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette= "Set1" )+
+  ylab("Survival Rate") +
+  ggtitle("Survival Rate by Family size")  
+
+### find the correlation matrix for numeric columns 
+corr_matrix <-data2 %>%
+  select(-PassengerId,-SibSp,-Parch) %>%
+  select_if(is.numeric) %>%
+  cor(use="complete.obs") 
+print(corr_matrix)
 
 
+#### doing some predictive analytics in predicting survival using the infomation given. 
+
+### data prep 
+feature<-data2[1:891,c('Pclass','Sex','BinnedAge','FamilySize','title','Embarked')]
+response <- as.factor(data2$Survived)
+feature$Survived=as.factor(data2$Survived)
+
+smp_size <- floor(0.8 * nrow(feature))
+set.seed(500)
+ind=sample(seq_len(nrow(feature)), size = smp_size)
+train_val=feature[ind,]
+test_val=feature[-ind,]
+## check data balance
+print(round(prop.table(table(train_val$Survived)*100),digits = 1))
+print(round(prop.table(table(test_val$Survived)*100),digits = 1))
 
 
+## run a logistic regression model 
+log_model <- glm(Survived ~ ., family = binomial(link=logit), 
+               data = train_val)
+summary(log.mod)
+##get prediction for training data
+train.probs <- predict(log_model, data=train_val,type =  "response")
+## get the confusion matrix for trianing data 
+table(train_val$Survived,train.probs>0.5)
+predictionaccuracy<- (383+211)/712
 
-
-
+print(predictionaccuracy)
+test.probs <- predict(log_model, newdata=test_val,type =  "response")
+table(test_val$Survived,test.probs>0.5)
+testaccuracy<- (100+50)/179
+print(testaccuracy)
