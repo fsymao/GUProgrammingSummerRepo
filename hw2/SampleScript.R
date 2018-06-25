@@ -131,7 +131,7 @@ CancerRatesB$rate <- as.numeric(as.character(CancerRatesB$rate))
 # https://www.census.gov/geo/maps-data/data/cbf/cbf_counties.html
 
 # I downloaded the zip and placed all files in the zip into my RStudio folder
-us.map <- readOGR(dsn = ".", layer = "cb_2016_us_county_20m", stringsAsFactors = FALSE)
+us.map <- readOGR(dsn = "cb_2016_us_county_20m", layer = "cb_2016_us_county_20m", stringsAsFactors = FALSE)
 head(us.map)
 # Remove Alaska(2), Hawaii(15), Puerto Rico (72), Guam (66), Virgin Islands (78), American Samoa (60)
 #  Mariana Islands (69), Micronesia (64), Marshall Islands (68), Palau (70), Minor Islands (74)
@@ -180,6 +180,7 @@ popup_LU <- paste0("<strong>Use Name: </strong>",
                    LandUse$url)
 
 pal <- colorQuantile("YlOrRd", NULL, n = 9)
+
 gmap <- leaflet(data = cancermap) %>%
   # Base groups
   addTiles() %>%
@@ -202,4 +203,4 @@ gmap <- leaflet(data = cancermap) %>%
     options = layersControlOptions(collapsed = FALSE)
   )
 gmap
-saveWidget(gmap, 'US_county_cancer_poll_map.html', selfcontained = TRUE)
+#saveWidget(gmap, 'US_county_cancer_poll_map.html', selfcontained = TRUE)
