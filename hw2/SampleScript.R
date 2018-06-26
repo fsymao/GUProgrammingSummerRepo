@@ -77,7 +77,7 @@ LandUse <- read.csv('LandUseDatasetREALLatlong.csv')
 names(CancerRates) <- tolower(names(CancerRates))
 #head(CancerRates)
 
-# Rename columns to make for a clean df merge later.
+# Rename columns to make for a clean  df merge later.
 ##GEOID is the same as FIPS
 colnames(CancerRates) <- c("location", "GEOID", "rate")
 #head(CancerRates)
