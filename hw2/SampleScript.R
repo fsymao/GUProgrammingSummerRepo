@@ -155,6 +155,21 @@ popup_dat <- paste0("<strong>County: </strong>",
                     "<br><strong>Cancer Rate (Age Adjusted) Out of 100,000: </strong>", 
                     cancermap$rate)
 
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
+#The VA's Veteran Health Administration, in support of the Open Data Initiative, 
+#is providing the number of Veteran enrollees by state/county for fiscal year 2015.
+
+
+##https://catalog.data.gov/dataset/fy2015-vha-enrollees-by-county
+
+
+
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
+
+
+
 #Color Pallette
 #pal <- colorQuantile("YlOrRd", NULL, n = 9)
 
@@ -167,6 +182,10 @@ popup_dat <- paste0("<strong>County: </strong>",
 #               weight = 1,
 #               popup = popup_dat) %>% 
 #   addMarkers(lat=39.8, lng=-105.2, popup="Rocky Flats SuperFund Site")
+
+
+
+
 
 
 #Grouping for map options and User Choices
