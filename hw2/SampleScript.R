@@ -157,13 +157,61 @@ popup_dat <- paste0("<strong>County: </strong>",
 
 #--------------------------------------------------------------------#
 #--------------------------------------------------------------------#
-#The VA's Veteran Health Administration, in support of the Open Data Initiative, 
-#is providing the number of Veteran enrollees by state/county for fiscal year 2015.
+#----------------------------Shaoyu Feng-----------------------------#
+#----------------------------sf865-----------------------------------#
+#This data source contains data representing seismic events in different countries over a seven-day period in 2012.
+#Earthquake data is collected in real-time by geological institutions worldwide, such as the United States Geological Survey (USGS). 
+#You can find further details about the data types on the USGS website.
+#The date source if from: http://js.cit.datalens.api.here.com/datasets/starter_pack/Earthquakes_7day.csv
+
+# Src	String	Two-letter network code representing the data contributor which recorded the earthquake
+# Eqid	String	Unique earthquake ID
+# Version	String	Version of the record
+# Datetime	Date	Date and time of the earthquake
+# Lat	Number	Latitude of the earthquake location
+# Lon	Number	Longitude of the earthquake location
+# Magnitude	Number	Magnitude of the earthquake
+# Depth	Number	Depth of the earthquake
+# NST	Number	Total number of earthquake-reporting stations used to determine the location of the earthquake
+# Region	String	Region where the earthquake occurred
 
 
-##https://catalog.data.gov/dataset/fy2015-vha-enrollees-by-county
+EarthQuake <- read.csv('Earthquakes_7day.csv')
+### Format the datetime to yyyy-mm-dd for ease of read
+## original datetime example is Wednesday, September 26, 2012 15:07:51 UTC
+EarthQuake$Datetime<- as.Date(as.character(EarthQuake$Datetime), format = "%A, %B %d, %Y %H:%M:%S")
+#To take necessary columns for the plot 
+EarthQuake <- EarthQuake[c('Lat','Lon','Magnitude','Depth','Region','Datetime')]
+popup_EA <- paste0("<strong>Region: </strong>", 
+                   EarthQuake$Region, 
+                   "<br><strong>Date: </strong>", 
+                   EarthQuake$Datetime, 
+                   "<br><strong>Magnitude: </strong>", 
+                   EarthQuake$Magnitude, 
+                   "<br><strong>Depth: </strong>", 
+                   EarthQuake$Depth
+                   )
 
 
+## to define the colors of icon based on the magnitude of earthquake
+getColor <- function(EarthQuake) {
+  sapply(EarthQuake$Magnitude, function(mag) {
+    if(mag <= 4) {
+      "green"
+    } else if(mag <= 5) {
+      "orange"
+    } else {
+      "red"
+    } })
+}
+
+## To define a icon to be added for earthquake map
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = getColor(EarthQuake)
+)
 
 #--------------------------------------------------------------------#
 #--------------------------------------------------------------------#
@@ -216,9 +264,21 @@ gmap <- leaflet(data = cancermap) %>%
   #addPolygons(data = outline, lng = ~long, lat = ~lat,
   #           fill = F, weight = 2, color = "#FFFFCC", group = "Outline") %>%
   # Layers control
+  
+
+ #----------------------------Shaoyu Feng-----------------------------#
+ #----------------------------sf865-----------------------------------#
+
+  #addMarkers(data=EarthQuake,lat=~Lat, lng=~Lon, popup=popup_EA, icon=greenLeafIcon, group = "Earthquake Location") %>% 
+  
+  # To Add the Earthquake Icon into the gmap
+  addAwesomeMarkers(data=EarthQuake,lat=~Lat, lng=~Lon, popup=popup_EA, icon=icons, group = "Earthquake Location") %>% 
+ #--------------------------------------------------------------------#
+ #--------------------------------------------------------------------#
+  
   addLayersControl(
     baseGroups = c("Cancer Rate/100,000 by Counties"),
-    overlayGroups = c("Land Use Sites"),
+    overlayGroups = c("Land Use Sites","Earthquake Location"),
     options = layersControlOptions(collapsed = FALSE)
   )
 gmap
