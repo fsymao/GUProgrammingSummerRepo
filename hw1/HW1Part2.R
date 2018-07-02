@@ -93,7 +93,6 @@ names<-data2$Name
 title<-  lapply(names, function(x) {  temp<- strsplit(as.character(x),",")[1][[1]][2] 
 gsub(" ","",strsplit(as.character(temp),"\\.")[1][[1]][1]) 
 })
-
 title<-unlist(title)
 data2$title <- title
 

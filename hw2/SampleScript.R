@@ -192,7 +192,6 @@ popup_EA <- paste0("<strong>Region: </strong>",
                    EarthQuake$Depth
                    )
 
-
 ## to define the colors of icon based on the magnitude of earthquake
 getColor <- function(EarthQuake) {
   sapply(EarthQuake$Magnitude, function(mag) {
@@ -212,9 +211,73 @@ icons <- awesomeIcons(
   library = 'ion',
   markerColor = getColor(EarthQuake)
 )
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
 
 #--------------------------------------------------------------------#
 #--------------------------------------------------------------------#
+#----------------------------Shaoyu Feng-----------------------------#
+#----------------------------sf865-----------------------------------#
+
+#This data source contains data representing country populations 
+#as measured by the World Bank in 2013, 
+#represented by the country's name, ISO code, 
+#geographical co-ordinates (latitude, longitude) and population.
+
+# recID	Number	Record ID of the entry
+# CountryName	String	Name of country
+# CountryCode	String	ISO 3166-1 alpha-3 country code
+# pop_2013	Number	Population in 2013
+# lat	Number	Latitude of country location
+# lon	Number	Longitude of country location
+
+CountryPop<-read.csv('Global_country_populations_2013.csv')
+
+popup_Pop <- paste0("<strong>Country Name: </strong>", 
+                  CountryPop$CountryName, 
+                   "<br><strong>Country Code: </strong>", 
+                   CountryPop$CountryCode, 
+                   "<br><strong>Population: </strong>", 
+                   CountryPop$pop_2013
+)
+
+PoppulationIcon <- makeIcon(
+  iconUrl = "icon.png",
+  iconWidth = 13, iconHeight = 31,
+  iconAnchorX = 7, iconAnchorY = 30
+)
+
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
+
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
+#----------------------------Shaoyu Feng-----------------------------#
+#----------------------------sf865-----------------------------------#
+StarBucksLoc<-read.csv('USStarBucksLoc.csv')
+
+#to extract the state from the store infomatin
+state<-  lapply(StarBucksLoc$BriefInfo, function(x) {   strsplit(as.character(x),"-")[1][[1]][2] 
+})
+StarBucksLoc$State <- unlist(state)
+
+#to extract the store number from the store information
+substrRight <- function(x, n){
+  substr(x, nchar(x)-n+1, nchar(x))
+}
+
+StoreNo <-lapply(StarBucksLoc$BriefInfo, function(x) {   temp<-strsplit(as.character(x),"-")[1][[1]][3] 
+substrRight(temp,5)
+})
+
+
+
+
+
+#--------------------------------------------------------------------#
+#--------------------------------------------------------------------#
+
+
 
 
 
@@ -258,6 +321,7 @@ gmap <- leaflet(data = cancermap) %>%
               weight = 1,
               popup = popup_dat,
               group="Cancer Rate/100,000 by Counties") %>% 
+  
   # Overlay groups
   addMarkers(data=LandUse,lat=~lat, lng=~lng, popup=popup_LU, group = "Land Use Sites") %>% 
   #addCircles(~long, ~lat, ~10^mag/5, stroke = F, group = "Quakes") %>%
@@ -269,17 +333,19 @@ gmap <- leaflet(data = cancermap) %>%
  #----------------------------Shaoyu Feng-----------------------------#
  #----------------------------sf865-----------------------------------#
 
-  #addMarkers(data=EarthQuake,lat=~Lat, lng=~Lon, popup=popup_EA, icon=greenLeafIcon, group = "Earthquake Location") %>% 
   
+  addMarkers(data=CountryPop,lat=~lat, lng=~lon, popup=popup_Pop, icon=PoppulationIcon, group = "Country Population") %>% 
   # To Add the Earthquake Icon into the gmap
-  addAwesomeMarkers(data=EarthQuake,lat=~Lat, lng=~Lon, popup=popup_EA, icon=icons, group = "Earthquake Location") %>% 
+  # define icon 
+  # enable the option to cluter markers when there are too many markers near by
+  addAwesomeMarkers(data=EarthQuake,lat=~Lat, lng=~Lon, popup=popup_EA, icon=icons, group = "Earthquake Location", clusterOptions = markerClusterOptions()) %>% 
  #--------------------------------------------------------------------#
  #--------------------------------------------------------------------#
   
   addLayersControl(
     baseGroups = c("Cancer Rate/100,000 by Counties"),
-    overlayGroups = c("Land Use Sites","Earthquake Location"),
-    options = layersControlOptions(collapsed = FALSE)
+    overlayGroups = c("Land Use Sites","Earthquake Location","Country Population"),
+    options = layersControlOptions(collapsed = TRUE)
   )
 gmap
 #saveWidget(gmap, 'US_county_cancer_poll_map.html', selfcontained = TRUE)
