@@ -242,6 +242,7 @@ popup_Pop <- paste0("<strong>Country Name: </strong>",
 )
 
 PoppulationIcon <- makeIcon(
+  #https://www.iconfinder.com/icons/1420619/holding_leaflet_man_pamphlet_paper_person_reading_icon
   iconUrl = "icon.png",
   iconWidth = 13, iconHeight = 31,
   iconAnchorX = 7, iconAnchorY = 30
@@ -265,14 +266,33 @@ StarBucksLoc$State <- unlist(state)
 substrRight <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
-
-StoreNo <-lapply(StarBucksLoc$BriefInfo, function(x) {   temp<-strsplit(as.character(x),"-")[1][[1]][3] 
+StoreNo<-lapply(StarBucksLoc$BriefInfo, function(x) {   temp<-strsplit(as.character(x),"-")[1][[1]][3] 
 substrRight(temp,5)
 })
+StarBucksLoc$StoreNo <- unlist(StoreNo)
 
+## to extract city  from store infomation 
+City<-lapply(StarBucksLoc$BriefInfo, function(x) {temp<-strsplit(as.character(x),"-")[1][[1]][3]
+substr(temp, 1, nchar(temp)-5)
+})
+StarBucksLoc$City <- unlist(City)
 
+popup_Star <- paste0("<strong>Store No: </strong>", 
+                    StarBucksLoc$StoreNo, 
+                    "<br><strong>State: </strong>", 
+                    StarBucksLoc$State, 
+                    "<br><strong>City: </strong>", 
+                    StarBucksLoc$City,
+                    "<br><strong>Address: </strong>", 
+                    StarBucksLoc$Address 
+)
 
-
+StarBucksIcon <- makeIcon(
+  #http://niceclipart.com/12245/starbucks.html/starbucks-clipart-13
+  iconUrl = "Starbucks.png",
+  iconWidth = 13, iconHeight = 31,
+  iconAnchorX = 7, iconAnchorY = 30
+)
 
 #--------------------------------------------------------------------#
 #--------------------------------------------------------------------#
@@ -293,9 +313,6 @@ substrRight(temp,5)
 #               weight = 1,
 #               popup = popup_dat) %>% 
 #   addMarkers(lat=39.8, lng=-105.2, popup="Rocky Flats SuperFund Site")
-
-
-
 
 
 
@@ -333,19 +350,22 @@ gmap <- leaflet(data = cancermap) %>%
  #----------------------------Shaoyu Feng-----------------------------#
  #----------------------------sf865-----------------------------------#
 
-  
+  #add marker for country populationd data 
   addMarkers(data=CountryPop,lat=~lat, lng=~lon, popup=popup_Pop, icon=PoppulationIcon, group = "Country Population") %>% 
   # To Add the Earthquake Icon into the gmap
   # define icon 
   # enable the option to cluter markers when there are too many markers near by
-  addAwesomeMarkers(data=EarthQuake,lat=~Lat, lng=~Lon, popup=popup_EA, icon=icons, group = "Earthquake Location", clusterOptions = markerClusterOptions()) %>% 
+  addAwesomeMarkers(data=EarthQuake,lat=~Lat, lng=~Lon, popup=popup_EA, icon=icons, group = "Earthquake Location", clusterOptions = markerClusterOptions()) %>%
+  
+  ##add marker for Starbucks location data
+  addMarkers(data=StarBucksLoc,lat=~Lat, lng=~Lon, popup=popup_Star, icon=StarBucksIcon, group = "US StarBucks Loc",clusterOptions = markerClusterOptions()) %>%
  #--------------------------------------------------------------------#
  #--------------------------------------------------------------------#
   
   addLayersControl(
     baseGroups = c("Cancer Rate/100,000 by Counties"),
-    overlayGroups = c("Land Use Sites","Earthquake Location","Country Population"),
-    options = layersControlOptions(collapsed = TRUE)
+    overlayGroups = c("Land Use Sites","Earthquake Location","Country Population","US StarBucks Loc"),
+    options = layersControlOptions(collapsed = FALSE)
   )
 gmap
-#saveWidget(gmap, 'US_county_cancer_poll_map.html', selfcontained = TRUE)
+saveWidget(gmap, 'Interactive_Map.html', selfcontained = TRUE)
