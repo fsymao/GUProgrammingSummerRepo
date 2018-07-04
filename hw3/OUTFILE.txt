@@ -23,3 +23,21 @@ id gender age gpa sat section final project
 686836 1 28 3.45 1306.0 5.0 86 79
 654301 1 30 3.49 3.0 2.0 92 92
 615986 1 30 3.54 1350.0 5.0 91 87
+-------------------------------------------------------------
+------------Part 5(a)----------------------------------------
+Null Hypothesis: There is no significant difference between  two gender groups in final score.
+ Alternative Hypothesis: There is significant difference between  two gender groups in final score
+formula:  tscore = -1.59129  pvalue = 0.129161 
+ttest_ind:            tscore = -1.59129  pvalue = 0.129161 
+ttest_ind_from_stats: tscore = -1.59129  pvalue = 0.129161 
+Given p value in this T test is 0.129, we will fail to reject Null Hypothesis. 
+In other words, there is no significant difference between gender groups in final score  
+-------------------------------------------------------------
+------------Part 5(b)----------------------------------------
+Correlation coefficient matrix between two columns is:  
+[[1.         0.89863155]
+ [0.89863155 1.        ]] 
+ Linear regression formula is :  
+Y= 0.805481 *x  + 17.2595 
+r-square value is :  0.807539 
+Given r^2 value of 0.81 and pvalue of near zero, we can conclude final score and project has strong correlation
