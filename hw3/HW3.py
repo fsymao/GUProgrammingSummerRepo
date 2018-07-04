@@ -143,7 +143,19 @@ myfile.write("Y= %g *x  + %g \n" % (slope, intercept))
 myfile.write('r-square value is :  %g \n' % r_value**2)
 myfile.write("Given r^2 value of 0.81 and pvalue of near zero, we can conclude final score and project has strong correlation")
 myfile.close()
+#%%
+##plot the scatter plot with liner fitting line 
 
+#plt.plot(StudentData['final'].values,StudentData['project'].values, '-o')
+plt.scatter(StudentData['final'].values,StudentData['project'].values)
+# Add correlation line
+axes = plt.gca()
+m, b = np.polyfit(StudentData['final'].values,StudentData['project'].values, 1)
+X_plot = np.linspace(axes.get_xlim()[0],axes.get_xlim()[1],100)
+plt.plot(X_plot, m*X_plot + b, '-',color='orange')
+plt.title('Final Score V.S. Project Score')
+plt.xlabel('Final Scores')
+plt.ylabel('Project Scores')
 
 
 
