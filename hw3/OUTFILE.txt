@@ -35,9 +35,20 @@ In other words, there is no significant difference between gender groups in fina
 -------------------------------------------------------------
 ------------Part 5(b)----------------------------------------
 Correlation coefficient matrix between two columns is:  
-[[1.         0.89863155]
- [0.89863155 1.        ]] 
+[[ 1.          0.89863155]
+ [ 0.89863155  1.        ]] 
  Linear regression formula is :  
 Y= 0.805481 *x  + 17.2595 
 r-square value is :  0.807539 
-Given r^2 value of 0.81 and pvalue of near zero, we can conclude final score and project has strong correlation
+Given r^2 value of 0.81 and pvalue of near zero, we can conclude final score and project has strong correlation-------------------------------------------------------------
+------------Part 5(c)----------------------------------------
+One-Way-Anova  F-statistics = 0.700962  pvalue = 0.600854 
+Given above F stats score and pvalue >0.6, we can conclude that there is no
+Significant difference in final score. 
+
+-------------------------------------------------------------
+------------Part 5(d)----------------------------------------
+The mean, median, max, min, var, and std dev for final are: 80.375, 86.5, 97, 46, 202.984, 14.2473 
+The mean, median, max, min, var, and std dev for project are: 82, 86.5, 99, 52, 163.083, 12.7704 
+The mean, median, max, min, var, and std dev for gpa are: 3.28167, 3.37, 3.9, 1.78, 0.183589, 0.428473 
+The mean, median, max, min, var, and std dev for sat are: 1050.17, 1113, 1440, 3, 94852.3, 307.981 
