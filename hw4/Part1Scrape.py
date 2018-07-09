@@ -53,6 +53,7 @@ def main():
             print("Enter 'quit' to quit ") 
             var = input("Please Enter a stock symbol to retrive the latest quote: ")
     print("Thank you for using the stock retriever.")
+    
 if __name__ == '__main__':
     main()
 
