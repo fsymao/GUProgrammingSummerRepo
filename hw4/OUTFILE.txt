@@ -1,8 +1,5 @@
  zipcode DateObserved state City AQIType AQIValue
-20002 "2018-07-09 " DC "Metropolitan Washington" O3 31
-20002 "2018-07-09 " DC "Metropolitan Washington" PM2.5 42
-22206 "2018-07-09 " VA "Northern Virginia" O3 31
-22206 "2018-07-09 " VA "Northern Virginia" PM2.5 42
-80302 "2018-07-09 " CO Denver O3 49
-80302 "2018-07-09 " CO Denver PM2.5 39
-80302 "2018-07-09 " CO Denver PM10 18
+22202 "2018-07-09 " VA "Northern Virginia" O3 24
+22202 "2018-07-09 " VA "Northern Virginia" PM2.5 44
+90210 "2018-07-09 " CA "NW Coastal LA" O3 16
+90210 "2018-07-09 " CA "NW Coastal LA" PM2.5 47
