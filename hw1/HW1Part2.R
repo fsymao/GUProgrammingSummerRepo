@@ -21,11 +21,9 @@
 
 ###Additional package needed is 
 ##ggplot
-##randomForest
 
 
 require(ggplot2)
-require(randomForest)
 
 data2<- read.table("Titanic_Training_Data.csv",sep =",",
                   header = TRUE, quote ="\"'", stringsAsFactors = F, na.strings = c("", "NA"))
@@ -192,7 +190,7 @@ print(round(prop.table(table(test_val$Survived)*100),digits = 1))
 ## run a logistic regression model 
 log_model <- glm(Survived ~ ., family = binomial(link=logit), 
                data = train_val)
-summary(log.mod)
+summary(log_model)
 ##get prediction for training data
 train.probs <- predict(log_model, data=train_val,type =  "response")
 ## get the confusion matrix for trianing data 
