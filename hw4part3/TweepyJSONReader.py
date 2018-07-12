@@ -30,7 +30,7 @@ from nltk.tokenize import word_tokenize
 from nltk.tokenize import TweetTokenizer
 import re
 #https://docs.python.org/3/library/re.html
-
+#%%
 linecount=0
 hashcount=0
 wordcount=0
@@ -40,7 +40,7 @@ BagOfLinks=[]
 
 ### SET THE FILE NAME ###
 
-tweetsfile="file_womensrights.txt"
+tweetsfile="file_DataScience.txt"
 
 ###################################
 
